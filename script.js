@@ -1,27 +1,16 @@
-/*
-    This gets the current year
-    from the user's computer.
-*/
+// Highlight the current section in the side navigation
+const links = document.querySelectorAll('.toc a');
+const sections = [...links].map(a => document.querySelector(a.getAttribute('href')));
 
-const currentYear =
-    new Date().getFullYear();
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      links.forEach(a => a.classList.toggle('active', a.getAttribute('href') === '#' + entry.target.id));
+    }
+  });
+}, { rootMargin: '-30% 0px -60% 0px' });
 
+sections.forEach(s => s && observer.observe(s));
 
-/*
-    Find the HTML element
-    whose id is "current-year"
-*/
-
-const yearElement =
-    document.getElementById(
-        "current-year"
-    );
-
-
-/*
-    Put the current year
-    inside that HTML element.
-*/
-
-yearElement.textContent =
-    currentYear;
+// Footer year
+document.getElementById('year').textContent = new Date().getFullYear();
